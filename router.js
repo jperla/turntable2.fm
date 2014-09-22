@@ -11,8 +11,9 @@ function route(request, response) {
 	register.register(request, response);
 	break;
     default:
-	// TODO return 404
-	response.write('Default behavior.');
+	response.writeHead(404, {'Content-Type': 'text/plain'});
+	response.write('That page does not exist.');
+	response.end()
     }
 }
 
