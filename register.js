@@ -26,10 +26,10 @@ function register(request, response) {
 		response.end();
 	    } else {
 		// TODO nesting these callbacks looks awkward to me...is there a better convention?
-		db.incr('constants:num_users', function(err, userID) {
+		db.incr('user:num_users', function(err, userID) {
 			console.log('user id: ' + userID);
 			var hash_password = hash_fn(password);
-			db.sadd('all_users', user);
+			db.sadd('user:all_users', user);
 			db.hmset('user:' + userID, 'username', user, 'password', hash_password);
 
 			response.writeHead(200, {'Content-Type': 'text/plain'});
