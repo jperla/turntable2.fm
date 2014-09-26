@@ -1,13 +1,14 @@
 var redis = require('redis');
 var db = redis.createClient();
 var url = require('url');
+var jade = require('jade');
 
 function create(request, response) {
         // TODO use get params instead of parse
     var query = url.parse(request.url, true).query;
     var room = query.room;
     var userID = query.user;
-    console.log('User ' + userID + ' aAttempting to create room ' + room);
+    console.log('User ' + userID + ' attempting to create room ' + room);
 
     function add_room(err, roomID) {
 	console.log('room id: ' + roomID);
@@ -39,6 +40,7 @@ function join(request, response) {
     var query = url.parse(request.url, true).query;
     var userID = query.user;
     var roomID = query.room;
+    console.log('User ' + userID + ' joining room ' + roomID);
 
     var room_aud_key = 'room:' + roomID + ':audience';
     db.sadd(room_aud_key, userID);
@@ -49,28 +51,21 @@ function join(request, response) {
     var room_max_dj_key = 'room:' + roomID + ':max_dj';
     var room_song_key = 'room:' + roomID + ':song';
     var room_data = {};
-    db.zcard(room_max_dj_key, function(err, num_djs) {
-	    db.multi()
-		.zrange(room_dj_key, 0, num_djs)
-		.smembers(room_aud_key)
-		.hmget(room_key, 'name')
-		.hmget(room_key, 'description')
-		.exec(function (err, replies) {
-			var djs = replies[0];
-			var audience = replies[1];
-			var name = replies[2];
-			var description = replies[3];
-			response.writeHead(200, {'Content-Type': 'application/json'});
-			response.write(JSON.stringify({
-				"name": name,
-				"id": roomID,
-				"description": description,
-				"djs": djs,
-				"audience": audience
-				    }));
-			response.end();
-		    });
-	});
+    db.multi()
+	.zrange(room_dj_key, 0, -1)
+	.smembers(room_aud_key)
+	.hmget(room_key, 'name')
+	.hmget(room_key, 'description')
+	.exec(function (err, replies) {
+		response.writeHead(200, {'Content-Type': 'text/html'});
+		console.log("replies: " + replies);
+		var options = {djs: replies[0],
+			       audience: replies[1],
+			       name: replies[2],
+			       description: replies[3]};
+		response.write(jade.renderFile('templates/room.jade', options));
+		response.end();
+	    });
 }
 
 function start_dj(request, response) {
