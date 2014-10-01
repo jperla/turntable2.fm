@@ -2,23 +2,23 @@ var redis = require('redis');
 var db = redis.createClient();
 var url = require('url');
 
+function add_room(err, roomID) {
+    console.log('room id: ' + roomID);
+    db.sadd('room:all_rooms', room);
+    var description = userID + '\'s room with id ' + roomID + '!';
+    db.hmset('room:' + roomID, 'user', userID, 'name', room, 'description', description);
+
+    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.write('Room ' + room + ' created.');
+    response.end();
+}
+
 function create(request, response) {
         // TODO use get params instead of parse
     var query = url.parse(request.url, true).query;
     var room = query.room;
     var userID = query.user;
     console.log('User ' + userID + ' aAttempting to create room ' + room);
-
-    function add_room(err, roomID) {
-	console.log('room id: ' + roomID);
-	db.sadd('room:all_rooms', room);
-	var description = userID + '\'s room with id ' + roomID + '!';
-	db.hmset('room:' + roomID, 'user', userID, 'name', room, 'description', description);
-	
-	response.writeHead(200, {'Content-Type': 'text/plain'});
-	response.write('Room ' + room + ' created.');
-	response.end();
-    }
 
     function conditionally_add_room(err, room_exists) {
 	if (room_exists) {
