@@ -1,0 +1,9 @@
+doctype html
+html(lang="en")
+  head
+    title= Turntable2
+  body
+    h1 Welcome to the name room!
+    p description
+    each dj in djs
+      p dj

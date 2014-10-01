@@ -1,5 +1,5 @@
-var register = require('./register');
 var room = require('./room');
+var lobby = require('./lobby');
 var url = require('url');
 
 function route(request, response) {
@@ -9,7 +9,10 @@ function route(request, response) {
     console.log('About to route a request for ' + pathname + ' with query ' + query);
     switch(url_parts.pathname) {
     case '/register':
-	register.register(request, response);
+	lobby.register(request, response);
+	break;
+    case '/enter_lobby':
+	lobby.enter_lobby(request, response);
 	break;
     case '/create_room':
 	room.create(request, response);
