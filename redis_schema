@@ -1,0 +1,17 @@
+user:all_users
+    username    id
+
+user:[id]
+    name	[name]
+    avatar    	[avatar]
+    [etc]	[etc]
+
+room:all_rooms
+    name	id
+
+room:id
+    name	[name]
+    
+room:id:djs
+
+room:id:audience
