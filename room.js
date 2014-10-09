@@ -36,6 +36,7 @@ function create(request, response) {
 
 function joinRoomByID(userID, room, response) {
     return function(err, roomID) {
+	console.log("user " + userID + " room " + room);
 	var room_aud_key = 'room:' + roomID + ':audience';
 	db.sadd(room_aud_key, userID);
 
@@ -51,14 +52,12 @@ function joinRoomByID(userID, room, response) {
 	    .hmget(room_key, 'name')
 	    .hmget(room_key, 'description')
 	    .exec(function (err, replies) {
-		    response.writeHead(200, {'Content-Type': 'text/html'});
-		    console.log("replies: " + replies);
 		    var options = {djs: replies[0],
 				   audience: replies[1],
 				   name: replies[2],
 				   description: replies[3]};
-		    response.write(jade.renderFile('templates/room.jade', options));
-		    response.end();
+		    console.log("replies: " + replies + " options: " + options);
+		    response.send(options);
 		});
     }
 }

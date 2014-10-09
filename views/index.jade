@@ -1,0 +1,13 @@
+doctype html
+html(lang='en')
+  head
+    script(type='text/javascript', src='http://code.jquery.com/jquery-1.11.0.min.js')
+    script(src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js")
+    script(type='text/javascript', src='/javascripts/main.js')
+div(id='login')
+  input#roomcreate(type="text", placeholder="Create a room")
+  h2#rooms imarooms
+  include template.html
+div(id='rooms')
+  input#usercreate(type="text", placeholder="Register a user")
+  h2#users
