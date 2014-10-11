@@ -1,13 +1,12 @@
 <script id="room-view" type="text/x-handlebars-template">
-  These dudes are DJing
-  <br>
+  <h1>Welcome to {{name}} room</h1>
+  <br><h2>These dudes are DJing</h2><br>
   {{#each djs}}
-    <li>{{name}}</li>
+    <li>{{this}}</li>
   {{/each}}
-  Audience fools
-  <br>
+  <h2>Audience fools</h2><br>
   {{#each audience}}
-    <li>{{name}}</li>
+    <li>{{this}}</li>
   {{/each}}
   <br>
   </ul>

@@ -5,7 +5,7 @@ html(lang="en")
   body
     h1 Welcome to the Lobby!
     #container.col
-      each room in rooms
+      for room in rooms
         form(action='/join_room', method='get')
           input(type='hidden', name='room', value=room)
           input(type='hidden', name='user', value=user)

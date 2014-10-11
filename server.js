@@ -9,14 +9,15 @@ app.set('view engine', 'jade');
 app.engine('jade', require('jade').__express);
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
 	res.render('index', { title: 'Hey', message: 'Hello there!'});
     });
-app.get('/register', function (req, res) {
+app.get('/register', function(req, res) {
 	lobby.register(req, res);
     });
-app.get('/enter_lobby', function (req, res) {
-	lobby.enterLobby(req, res);
+app.get('/enter_lobby', function(req, res) {
+	var userID = 11;
+	lobby.enterLobby(userID, res);
     });
 app.get('/create_room', function (req, res) {
 	room.create(req, res);

@@ -5,15 +5,11 @@ var jade = require('jade');
 
 // redis.debug_mode = process.argv[2];
 
-function enterLobby(request, response) {
-    db.hkeys('room:all_rooms', function(err, all_rooms) {
-	    response.writeHead(200, {'Content-Type': 'text/html'});
-	    var options = {rooms: all_rooms,
-			   pageTitle: 'Turntable2',
-			   // TODO don't hard code user
-	                   user: 11};
-	    response.write(jade.renderFile('templates/lobby.jade', options));
-	    response.end();
+function enterLobby(userID, res) {
+    db.hkeys('room:all_rooms', function(err, allRooms) {
+	    var options = {rooms: allRooms,
+	                   user: userID};
+	    res.send(options);
 	});
 }
 
