@@ -1,0 +1,17 @@
+login
+    user password login
+
+lobby
+    create room
+    list of rooms
+
+room
+    room title
+    now playing
+    list of djs
+    start/stop dj
+    list of audience
+
+setlist
+    list of songs
+    move song controls
