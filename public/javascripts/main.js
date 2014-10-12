@@ -1,4 +1,4 @@
-function bindRoomCreate() {
+function bindRoomCreate(rooms) {
 	var roomSource = $("#room-view").html();
 	var roomTemplate = Handlebars.compile(roomSource);
 
@@ -14,6 +14,21 @@ function bindRoomCreate() {
 			});
 		};
 	    });
+
+	for (var room in rooms) {
+	    var roomTag = '#room_' + rooms[room];
+	    console.log("binding " + roomTag);
+	    $(document).on('click', roomTag, function(e) {
+		    console.log("click on " + roomTag);
+		    var parameters = { room: $(this).val(),
+				       user: 11 };
+		    $.get( '/join_room', parameters, function(data) {
+			    console.log(data);
+			    $('#room').html(roomTemplate(data));
+			    $('#lobby').empty();
+			});
+		});
+	}
     }
 
 $(function(){
@@ -26,7 +41,7 @@ $(function(){
 		    $.get('/enter_lobby', parameters, function(data) {
 			    console.log("response from enter lobby: " + data);
 			    $('#lobby').html(lobbyTemplate(data));
-			    bindRoomCreate();
+			    bindRoomCreate(data['rooms']);
 			    $('#register').empty();
 			});
 		};

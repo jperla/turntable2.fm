@@ -68,7 +68,11 @@ function join(request, response) {
     var room = query.room;
     console.log('User ' + userID + ' joining room ' + room);
 
-    db.hget('room:all_rooms', room, joinRoomById(userID, room, response));
+    joinRoomByName(room, userID, response);
+}
+
+function joinRoomByName(room, userID, response) {
+    db.hget('room:all_rooms', room, joinRoomByID(userID, room, response));
 }
 
 function startDJ(request, response) {
