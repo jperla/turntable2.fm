@@ -1,10 +1,23 @@
+<script id="lobby-view" type="text/x-handlebars-template">
+  <h1>Welcome to Turntable 2</h1>
+  <input id="roomcreate" type=text placeholder="Create a new room">
+  {{#each rooms}}
+    <li><input id=room_{{this}} type="submit" value={{this}}></li>
+  {{/each}}
+  <br>
+</script>
+
 <script id="room-view" type="text/x-handlebars-template">
   <h1>Welcome to {{name}} room</h1>
-  <br><h2>These dudes are DJing</h2><br>
+  <h2>Now Playing {{song}}</h2>
+  <br><p>These dudes are DJing</p><br>
   {{#each djs}}
     <li>{{this}}</li>
   {{/each}}
-  <h2>Audience fools</h2><br>
+  <input id="toggledj" type="submit" value="Start DJing">
+  <br>
+  <input id="setlist" type="submit" value="Edit My Set List">
+  <p>Audience fools</p><br>
   {{#each audience}}
     <li>{{this}}</li>
   {{/each}}
@@ -12,11 +25,12 @@
   </ul>
 </script>
 
-<script id="lobby-view" type="text/x-handlebars-template">
-  <h1>Welcome to Turntable 2</h1>
-  <input id="roomcreate" type=text placeholder="Create a new room">
-  {{#each rooms}}
-    <li><input id=room_{{this}} type='submit' value={{this}}></li>
+<script id="setlist-view" type="text/x-handlebars-template">
+  <h1 id="roomback">Back to {{room}}</h1>
+  <p>TODO file dialogue</p>
+  <input id="uploadsong" type="text" placeholder="Upload a song">
+  {{#each songs}}
+    <li><input id=song_{{this}} type="submit" value={{this}}></li>
   {{/each}}
   <br>
 </script>

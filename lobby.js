@@ -29,7 +29,7 @@ function register(request, response) {
     // TODO move these keys to constants?
     db.hget('user:all_users', user, function (err, existingUserID) {
 	    if (existingUserID != null) {
-		// TODO is there a less redundant way to do this stuff?
+		// TODO error throwing, catching
 		response.writeHead(409, {'Content-Type': 'text/plain'});
 		response.write('The username ' + user + ' is already taken.');
 		response.end();

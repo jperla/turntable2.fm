@@ -21,7 +21,7 @@ function create(request, response) {
 
     function conditionallyAddRoom(err, roomID) {
 	if (roomID != null) {
-	    // TODO is there a less redundant way to do this stuff?
+	    // TODO error throwing, catching
 	    response.writeHead(409, {'Content-Type': 'text/plain'});
 	    response.write('The room ' + room + ' already exists.');
 	    response.end();
@@ -40,7 +40,6 @@ function joinRoomByID(userID, room, response) {
 	var room_aud_key = 'room:' + roomID + ':audience';
 	db.sadd(room_aud_key, userID);
 
-	// TODO set response json
 	var room_key = 'room:' + roomID;
 	var room_dj_key = 'room:' + roomID + ':djs';
 	var room_max_dj_key = 'room:' + roomID + ':max_dj';
@@ -76,13 +75,15 @@ function joinRoomByName(room, userID, response) {
 }
 
 function startDJ(request, response) {
+    console.log('entering startDJ');
     var query = url.parse(request.url, true).query;
     var userID = query.user;
     var roomID = query.room;
 
-    // TODO validation for ability to dj?
+    // TODO validation for ability to dj
     var roomDJKey = 'room:' + roomID + ':djs';
     var roomMaxDJKey = 'room:' + roomID + ':max_dj';
+    // TODO debug: TypeError: Object 0 has no method 'get'
     db.incr(roomMaxDJKey, function(err, djScore) {
 	    db.zadd(roomDJKey, djScore, userID);
 	});
@@ -95,13 +96,14 @@ function stopDJ(request, response) {
 
     var roomDJKey = 'room:' + roomID + ':djs';
     var roomMaxDJKey = 'room:' + roomID + ':max_dj';
-    db.zrem(room_dj_key, userID);
-    // TODO is this the right way to deal with an ever growing max_dj?
+    db.zrem(roomDJKey, userID);
+    // TODO deal with an ever growing max_dj
     db.multi()
 	.zcard(roomDJKey)
 	.exec(function(err, replies) {
 		var num_djs = replies.get(0);
 		if (numDJs == 0) {
+		    // TODO debug: TypeError: Object 0 has no method 'get'
 		    db.set(roomMaxDJKey, 0);
 		}
 	    });
