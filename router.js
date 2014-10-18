@@ -44,7 +44,7 @@ function route(request, response) {
     default:
 	response.writeHead(404, {'Content-Type': 'text/plain'});
 	response.write('That page does not exist.');
-	response.end()
+	response.end();
     }
 }
 

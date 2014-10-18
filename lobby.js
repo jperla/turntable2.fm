@@ -28,7 +28,7 @@ function register(request, response) {
 
     // TODO move these keys to constants?
     db.hget('user:all_users', user, function (err, existingUserID) {
-	    if (existingUserID != null) {
+	    if (existingUserID !== null) {
 		// TODO error throwing, catching
 		response.writeHead(409, {'Content-Type': 'text/plain'});
 		response.write('The username ' + user + ' is already taken.');
@@ -41,11 +41,11 @@ function register(request, response) {
 			db.hset('user:all_users', user, userID);
 			db.hmset('user:' + userID, 'username', user, 'password', hash_password);
 
-			enterLobby(request, response)
+			enterLobby(request, response);
 		    });
 	    }
 	});
 }
 
-exports.enterLobby = enterLobby
-exports.register = register
+exports.enterLobby = enterLobby;
+exports.register = register;

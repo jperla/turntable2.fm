@@ -16,11 +16,11 @@ function create(request, response) {
 	var description = userID + '\'s room with id ' + roomID + '!';
 	db.hmset('room:' + roomID, 'user', userID, 'name', room, 'description', description);
 
-	joinRoomByID(userID, room, response)(null, roomID)
+	joinRoomByID(userID, room, response)(null, roomID);
     }
 
     function conditionallyAddRoom(err, roomID) {
-	if (roomID != null) {
+	if (roomID !== null) {
 	    // TODO error throwing, catching
 	    response.writeHead(409, {'Content-Type': 'text/plain'});
 	    response.write('The room ' + room + ' already exists.');
@@ -58,7 +58,7 @@ function joinRoomByID(userID, room, response) {
 		    console.log("replies: " + replies + " options: " + options);
 		    response.send(options);
 		});
-    }
+    };
 }
 
 function join(request, response) {
@@ -102,7 +102,7 @@ function stopDJ(request, response) {
 	.zcard(roomDJKey)
 	.exec(function(err, replies) {
 		var num_djs = replies.get(0);
-		if (numDJs == 0) {
+		if (numDJs === 0) {
 		    // TODO debug: TypeError: Object 0 has no method 'get'
 		    db.set(roomMaxDJKey, 0);
 		}
