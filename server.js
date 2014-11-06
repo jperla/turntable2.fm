@@ -81,7 +81,7 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.post('/login', function(req, res, next) {
-	console.log('post data: ' + req.body);
+	console.log('post data: ' + req.body.username + ' pw ' + req.body.password);
 	passport.authenticate('local', function(err, user, info) {
 		if (err) { return next(err) }
 		if (!user) {
@@ -91,19 +91,24 @@ app.post('/login', function(req, res, next) {
 		}
 		req.logIn(user, function(err) {
 			if (err) { return next(err); }
-			return res.redirect('/enter_lobby');
+			return res.redirect('/');
 		    });
 	    })(req, res, next);
     });
 
 app.get('/', function(req, res) {
-	res.render('index', { title: 'Hey', message: 'Hello there!'});
+	res.render('index', {user: req.user});
+    });
+app.get('/enter', ensureAuthenticated, function(req, res) {
+	res.render('enter', { user: req.user});
     });
 app.get('/register', function(req, res) {
 	lobby.register(req, res);
     });
 app.get('/enter_lobby', ensureAuthenticated, function(req, res) {
 	var userID = 11;
+	console.log('user: ' + req.user);
+	console.log('entered lobby...');
 	lobby.enterLobby(userID, res);
     });
 app.get('/create_room', function (req, res) {
@@ -139,5 +144,6 @@ function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
 	return next();
     }
-    res.redirect('/login')
+    console.log('redirecting to login');
+    res.redirect('/')
 	}

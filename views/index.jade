@@ -5,16 +5,18 @@ html(lang='en')
     script(type='text/javascript', src='/javascripts/handlebars-v2.0.0.js')
     script(type='text/javascript', src='/javascripts/main.js')
 h1#home Turntable2
-div#register
-  form(action='/login', method='post')
-    div
-      label Username:
-       input#user(type='text', name='username')
-    div
-      label Password:
-      input#password(type='password', name='password')
-    div
-      input(type='submit', value='Login')
-      include template.html
-div#lobby
+if !user
+  div#register
+    form#loginform(action='/login', method='post')
+      div
+        label Username:
+         input#user(type='text', name='username')
+      div
+        label Password:
+        input#password(type='password', name='password')
+      div
+        input(type='submit', value='Login')
+        include template.html
+else
+  div#lobby
 div#room

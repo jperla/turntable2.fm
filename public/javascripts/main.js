@@ -1,3 +1,10 @@
+var lobbySource = $("#lobby-view").html();
+console.log("lobby source", lobbySource);
+var lobbyTemplate = Handlebars.compile(lobbySource);
+
+var roomSource = $("#room-view").html();
+var roomTemplate = Handlebars.compile(roomSource);
+
 function bindRoomHandlers() {
     $('#toggledj').on('click', function(e) {
 	    // TODO get actual room name
@@ -22,10 +29,6 @@ function bindRoomHandlers() {
 }
 
 function bindLobbyHandlers(rooms) {
-	var roomSource = $("#room-view").html();
-	var roomTemplate = Handlebars.compile(roomSource);
-	// TODO handlebar template passing (or use jade?)
-
 	$('#roomcreate').on('keyup', function(e) {
 		if(e.keyCode === 13) {
 		    var parameters = { room: $(this).val(),
@@ -52,9 +55,9 @@ function bindLobbyHandlers(rooms) {
 	}
     }
 
-function goToLobby(e, lobbyTemplate) {
+function goToLobby(e) {
     var parameters = { user: 11 };
-    $.get('/enter_lobby', parameters, function(data) {
+    $.get('/enter_lobby', function(data) {
 	    console.log("response from enter lobby: " + data);
 	    $('#lobby').html(lobbyTemplate(data));
 	    // TODO more consistent handler binding
@@ -64,16 +67,18 @@ function goToLobby(e, lobbyTemplate) {
 }
 
 $(function() {
-	var lobbySource = $("#lobby-view").html();
-	var lobbyTemplate = Handlebars.compile(lobbySource);
+	console.log("entering the main function");
 
-	$('#user').on('keyup', function(e) {
-		if (e.keyCode === 13) {
-		    goToLobby(e, lobbyTemplate);
-		};
-	    });
+	/* $('#loginform').submit(function(e) {
+		console.log('loginform submitted');
+		goToLobby(e, lobbyTemplate);
+		}); */
 
 	$('#home').on('click', function(e) {
+		goToLobby(e, lobbyTemplate);
+	    });
+
+	$('#lobby').load(function(e) {
 		goToLobby(e, lobbyTemplate);
 	    });
     });
